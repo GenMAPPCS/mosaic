@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<!-- build.xml - Build file for Sample Cytoscape Plugin -->
+<project name="Mosaic" default="jar" basedir=".">
+    <description>Builds, tests, and runs the project Mosaic.</description>
+    <import file="nbproject/build-impl.xml"/>
+
+    <!-- =================================================================== -->
+    <!-- Initialization target                                               -->
+    <!-- =================================================================== -->
+
+        <tstamp/>
+        <!-- Name of Plug In -->
+        <!-- Change this to the name of your Plug In -->
+        <!-- The name is used to create the plugin JAR file -->
+        <property name="plugin.name" value="Mosaic"/>
+        <!-- The directory containing source code -->
+        <property name="src.dir" value="src"/>
+        <property name="images" value="images"/>
+        <!-- The directory containing resource files -->
+        <property name="resources.dir" value="resources"/>
+        <property name="pluginlib.dir" value="lib"/>
+        <property name="doc.dir" value="doc"/>
+        <property name="plugindata.dir" value="data"/>
+        <!-- Check out this folder and reference *.jar in build path -->
+        <property name="commonlib.dir" value="../Plugins/libs/gpml"/>
+        <!-- Global "magic" property for <javac> -->
+        <property name="build.compiler" value="modern"/>
+        <!--  The directory containing library jar files -->
+        <property name="cytoroot.dir" value="/Program Files (x86)/Cytoscape_v2.8.1"/>
+        <property name="release.dir" value="/Program Files (x86)/Cytoscape_v2.8.1"/>
+        <!-- Temporary build directories -->
+        <property name="build.dir" value="build"/>
+        <property name="build.classes" value="${build.dir}/classes"/>
+        <property name="build.images" value="${build.classes}/images"/>
+        <property name="build.resources" value="${build.classes}/resources"/>
+
+        <!-- Classpath with all lib JAR Files and all Cytoscape Core classes -->
+        <path id="classpath">
+            <!-- include cytoscape.jar, which is it release directory top level -->
+            <fileset dir="${release.dir}">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${pluginlib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${commonlib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </path>
+
+
+    <!-- Target to create the build directories prior to compilation -->
+    <target name="prepare">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.classes}"/>
+        <mkdir dir="${build.resources}"/>
+        <mkdir dir="${build.images}"/>
+    </target>
+
+    <!--  Target to clean out all directories -->
+    <target name="clean" description="Removes all generated files.">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <!-- Target to create Cytoscape Jar File  -->
+    <!--
+    <target name="build_cytoscape">
+        <ant antfile="${cytoroot.dir}/cytoscape2.6/build.xml" inheritAll="false" target="jar"/>
+    </target>
+    -->
+    <!-- Target to create the javadoc information -->
+    <!--
+    <target name="doc" depends="prepare">
+        <echo>${src.dir}</echo>
+        <javadoc destdir="${doc.dir}" Private="yes">
+            <fileset dir="${src.dir}" defaultexcludes="no"/>
+        </javadoc>
+    </target>
+    -->
+    <!--  Target to compile all Plug In Code -->
+    <target name="compile" depends="prepare"
+            description="Compiles all PlugIn source code.">
+        <javac includeantruntime="false" debug="Yes" srcdir="${src.dir}" destdir="${build.classes}">
+            <classpath refid="classpath"/>
+        </javac>
+    </target>
+
+    <!--  Create PlugIn Jar File (Unobfuscated) -->
+    <target name="jar" depends="compile" description="Creates PlugIn Jar File.">
+        <copy file="plugin.props" todir="${build.classes}/org/nrnb/mosaic/"/>
+        <copy todir="${build.resources}">
+            <fileset dir="${resources.dir}"/>
+        </copy>
+        <copy todir="${build.images}">
+            <fileset dir="${images}"/>
+        </copy>
+        <unjar dest="${build.classes}">
+            <fileset dir="${pluginlib.dir}" includes="*.jar"/>
+        </unjar>
+        <jar destfile="${build.dir}/${plugin.name}.jar">
+            <fileset dir="${build.classes}"/>
+        </jar>
+
+        <echo message="${plugin.name}.jar is now complete.  It is located in build/ directory"/>
+
+        <!--<copy file="${build.dir}/${plugin.name}.jar" todir="${release.dir}/plugins"/>-->
+        <copy file="${build.dir}/${plugin.name}.jar" todir="${basedir}/dist"/>
+    </target>
+    
+    <target name="-post-jar">
+        <copy todir="${basedir}/dist">
+            <fileset dir="./cytoscape"/>
+        </copy>
+
+   </target>
+</project>

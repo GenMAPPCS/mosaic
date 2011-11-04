@@ -1,0 +1,34 @@
+#plugin.props
+
+# This props file should be filled out and included in the plugin jar file.  This props file will be used
+# to put information into the Plugin Manager about the plugin
+
+# -- The following properties are REQUIRED -- #
+
+# The plugin name that will be displayed to users
+pluginName=Mosaic
+
+# Description used to give users information about the plugin such as what it does.
+# Html tags are encouraged for formatting purposes.
+pluginDescription=Network partition, layout and color based on Gene Ontology or other annotations
+
+# Plugin version number, this must be two numbers separated by a decimlal.  Ex. 0.2, 14.03
+pluginVersion=1.0
+
+# Compatible Cytoscape version
+cytoscapeVersion=2.8
+
+# Category, use one of the categories listed on the http://cytoscape.org/plugins2.php site or create your own
+pluginCategory=Functional Enrichment
+
+# -- The following properties are OPTIONAL -- #
+
+# URL to a website that gives more information about your plugin, Ex. http://my-lab-site.org
+projectURL=http://pinscher.ucsf.edu/meta/trunk/mosaic/
+
+# List of authors.  Note each author and institution pair are separated by a : (colon)
+# each additional author institution pair must be separated from other pairs bye a ; (semicolon)
+pluginAuthorsInstitutions=Chao Zhang:University of Missouri & GSoC;Alexander Pico:Gladstone Institutes, UCSF;Kristina Hanspers:Gladstone Institutes, UCSF;Allan Kuchinsky:Aglient Technologies;Nathan Salomonis:Gladstone Institutes, UCSF
+
+# Date this plugin/plugin version was released
+releaseDate=Nov 5, 2011
