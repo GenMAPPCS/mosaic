@@ -15,10 +15,6 @@
  ******************************************************************************/
 package org.nrnb.mosaic.utils;
 
-import csplugins.id.mapping.CyThesaurusPlugin;
-import cytoscape.Cytoscape;
-import cytoscape.data.CyAttributes;
-import cytoscape.data.CyAttributesUtils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -38,7 +34,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.pathvisio.cytoscape.GpmlPlugin;
+
+import cytoscape.Cytoscape;
+import cytoscape.data.CyAttributes;
+import cytoscape.data.CyAttributesUtils;
 
 /**
  *
@@ -69,7 +70,7 @@ public class MosaicUtil {
 //            } catch (Exception ex) {
 //                Logger.getLogger(MosaicUtil.class.getName()).log(Level.SEVERE, null, ex);
 //            }
-            double cyThesVersion = CyThesaurusPlugin.VERSION;
+//            double cyThesVersion = CyThesaurusPlugin.VERSION;
             //System.out.println("CyThesaurusPlugin VERSION: "+ cyThesVersion);
             return true;
         } catch(NoClassDefFoundError e){
