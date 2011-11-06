@@ -291,9 +291,9 @@ public class MosaicSettingDialog extends JDialog
             rAnnMesLabel.setForeground(Color.BLACK);
         }
 
-        aAttParRateLabel.setText(checkAnnotationRate(partitionAttr)+"/"+numberOfNodes+" attribute values");
-        aAttLayRateLabel.setText(checkAnnotationRate(layoutAttr)+"/"+numberOfNodes+" attribute values");
-        aAttNodRateLabel.setText(checkAnnotationRate(colorAttr)+"/"+numberOfNodes+" attribute values");
+        aAttParRateLabel.setText(checkAnnotationRate(partitionAttr)+"/"+numberOfNodes+" nodes have attribute values");
+        aAttLayRateLabel.setText(checkAnnotationRate(layoutAttr)+"/"+numberOfNodes+" nodes have attribute values");
+        aAttNodRateLabel.setText(checkAnnotationRate(colorAttr)+"/"+numberOfNodes+" nodes have attribute values");
         checkDownloadStatus();
     }
     
@@ -450,17 +450,17 @@ public class MosaicSettingDialog extends JDialog
 
         aSelPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Attributes"));
 
-        aAttParLabel.setText("The attribute to use for partitioning");
+        aAttParLabel.setText("For partitioning");
         aAttParLabel.setMaximumSize(new java.awt.Dimension(228, 14));
         aAttParLabel.setMinimumSize(new java.awt.Dimension(228, 14));
         aAttParLabel.setPreferredSize(new java.awt.Dimension(228, 14));
 
-        aAttLayLabel.setText("The attribute to use for the layout");
+        aAttLayLabel.setText("For layout");
         aAttLayLabel.setMaximumSize(new java.awt.Dimension(228, 14));
         aAttLayLabel.setMinimumSize(new java.awt.Dimension(228, 14));
         aAttLayLabel.setPreferredSize(new java.awt.Dimension(228, 14));
 
-        aAttNodLabel.setText("The attribute to use for node color");
+        aAttNodLabel.setText("For node color");
         aAttNodLabel.setMaximumSize(new java.awt.Dimension(228, 14));
         aAttNodLabel.setMinimumSize(new java.awt.Dimension(228, 14));
         aAttNodLabel.setPreferredSize(new java.awt.Dimension(228, 14));
@@ -491,13 +491,13 @@ public class MosaicSettingDialog extends JDialog
         });
 
         aAttParRateLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        aAttParRateLabel.setText("0/0 attribute values");
+        aAttParRateLabel.setText("0/0 nodes have attribute values");
 
         aAttLayRateLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        aAttLayRateLabel.setText("0/0 attribute values");
+        aAttLayRateLabel.setText("0/0 nodes have attribute values");
 
         aAttNodRateLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        aAttNodRateLabel.setText("0/0 attribute values");
+        aAttNodRateLabel.setText("0/0 nodes have attribute values");
 
         javax.swing.GroupLayout aSelPanelLayout = new javax.swing.GroupLayout(aSelPanel);
         aSelPanel.setLayout(aSelPanelLayout);
@@ -586,7 +586,7 @@ public class MosaicSettingDialog extends JDialog
         rAnnTypComboBox.setMinimumSize(new java.awt.Dimension(90, 18));
         rAnnTypComboBox.setPreferredSize(new java.awt.Dimension(108, 18));
 
-        rAnnIdeLabel.setText("Identifier for annotation retrieval");
+        rAnnIdeLabel.setText("Identifier attribute");
         rAnnIdeLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         rAnnIdeLabel.setMaximumSize(new java.awt.Dimension(228, 14));
         rAnnIdeLabel.setMinimumSize(new java.awt.Dimension(228, 14));
@@ -755,9 +755,9 @@ public class MosaicSettingDialog extends JDialog
 
         sParPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Set Parameters"));
 
-        sParFewLabel.setText("Don't show subnetworks with fewer nodes than");
+        sParFewLabel.setText("Minimum nodes to view");
 
-        sParMorLabel.setText("Don't show subnetworks with more nodes than");
+        sParMorLabel.setText("Maximum nodes to view");
         sParMorLabel.setMaximumSize(new java.awt.Dimension(228, 14));
         sParMorLabel.setMinimumSize(new java.awt.Dimension(228, 14));
         sParMorLabel.setPreferredSize(new java.awt.Dimension(228, 14));
@@ -961,7 +961,7 @@ public class MosaicSettingDialog extends JDialog
     private void rAnnMesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rAnnMesButtonActionPerformed
         // TODO add your handling code here:
         if(((JButton)evt.getSource()).getText().equals("Download")) {
-            System.out.println("download buttion on click");
+            System.out.println("download button on click");
 //            FileDownloadDialog annDownloadDialog
 //                = new FileDownloadDialog(Cytoscape.getDesktop(), downloadDBList);
 //            annDownloadDialog.setLocationRelativeTo(Cytoscape.getDesktop());
