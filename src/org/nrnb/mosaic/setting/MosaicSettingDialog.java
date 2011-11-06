@@ -211,12 +211,12 @@ public class MosaicSettingDialog extends JDialog
             rAnnMesButton.setText(this.annotationButtonLabel);
             if(this.annotationButtonLabel == "Re-annotate") {
                 rAnnMesButton.setForeground(Color.BLACK);
-                rAnnMesLabel.setText("You can re-annotate this network and old annotation will be replaced.");
+                rAnnMesLabel.setText("You can optionally re-annotate this network and old annotation will be replaced.");
                 rAnnMesLabel.setForeground(Color.BLACK);
                 submitButton.setEnabled(true);
             } else {
                 rAnnMesButton.setForeground(Color.RED);
-                rAnnMesLabel.setText("You need to first annotate this network with the GO terms selected above!");
+                rAnnMesLabel.setText("You need to first annotate this network with the GO terms selected above.");
                 rAnnMesLabel.setForeground(Color.RED);
                 submitButton.setEnabled(false);
             }
@@ -226,12 +226,12 @@ public class MosaicSettingDialog extends JDialog
             if(!Mosaic.tagInternetConn) {
                 rAnnMesButton.setText("Help!");
                 rAnnMesButton.setForeground(Color.RED);
-                rAnnMesLabel.setText("Please check internet connection!");
+                rAnnMesLabel.setText("Please check internet connection.");
                 rAnnMesLabel.setForeground(Color.RED);
             } else {
                 rAnnMesButton.setText("Download");
                 rAnnMesButton.setForeground(Color.RED);
-                rAnnMesLabel.setText("You need to first download necessary databases for selected species!");
+                rAnnMesLabel.setText("You need to first download annotation databases for selected species.");
                 rAnnMesLabel.setForeground(Color.RED);
             }
             submitButton.setEnabled(false);
@@ -259,35 +259,41 @@ public class MosaicSettingDialog extends JDialog
                 checkAnnotationRate(layoutAttr)==0))||
                 (isGOAttr(colorAttr)&&(!CurrentNetworkAtts.contains(colorAttr)||
                 checkAnnotationRate(colorAttr)==0))) {
-            //Any of three global settings is GO attribute and annotation rate equls 0.
+            //Any of three global settings is GO attribute and annotation rate equals 0.
             //Force user to fetch the annotations, and user can not turn off the annotation panel.
             submitButton.setEnabled(false);
             rAnnSpeComboBox.setEnabled(true);
+            rAnnGOtComboBox.setEnabled(true);
             rAnnIdeComboBox.setEnabled(true);
             rAnnTypComboBox.setEnabled(true);
             rAnnMesButton.setEnabled(true);
             this.annotationButtonLabel = "Annotate";
             rAnnMesButton.setText(this.annotationButtonLabel);
             rAnnMesButton.setForeground(Color.RED);
-            rAnnMesLabel.setText("You need to first annotate this network with the GO terms selected above!");
+            rAnnMesLabel.setEnabled(true);
+            rAnnMesLabel.setText("You need to first annotate this network with the GO terms selected above.");
             rAnnMesLabel.setForeground(Color.RED);
         } else if(!(isGOAttr(partitionAttr)||isGOAttr(layoutAttr)||isGOAttr(colorAttr))) {
-            //None of three global settings is GO attribute, user can not turn on the annotattion panel.
+            //None of three global settings is GO attribute, user can not turn on the annotation panel.
             submitButton.setEnabled(true);
             rAnnSpeComboBox.setEnabled(false);
+            rAnnGOtComboBox.setEnabled(false);
             rAnnIdeComboBox.setEnabled(false);
             rAnnTypComboBox.setEnabled(false);
-            rAnnMesButton.setEnabled(false);            
+            rAnnMesButton.setEnabled(false); 
+            rAnnMesLabel.setEnabled(false);
         } else {
             submitButton.setEnabled(true);
             rAnnSpeComboBox.setEnabled(true);
+            rAnnGOtComboBox.setEnabled(true);
             rAnnIdeComboBox.setEnabled(true);
             rAnnTypComboBox.setEnabled(true);
             rAnnMesButton.setEnabled(true);
             this.annotationButtonLabel = "Re-annotate";
             rAnnMesButton.setText(this.annotationButtonLabel);
             rAnnMesButton.setForeground(Color.BLACK);
-            rAnnMesLabel.setText("You can re-annotate this network and old annotation wiil be replaced.");
+            rAnnMesLabel.setEnabled(true);
+            rAnnMesLabel.setText("You can optionally re-annotate this network and old annotations wiil be replaced.");
             rAnnMesLabel.setForeground(Color.BLACK);
         }
 
@@ -450,17 +456,17 @@ public class MosaicSettingDialog extends JDialog
 
         aSelPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Attributes"));
 
-        aAttParLabel.setText("For partitioning");
+        aAttParLabel.setText("Attribute to use for partitioning");
         aAttParLabel.setMaximumSize(new java.awt.Dimension(228, 14));
         aAttParLabel.setMinimumSize(new java.awt.Dimension(228, 14));
         aAttParLabel.setPreferredSize(new java.awt.Dimension(228, 14));
 
-        aAttLayLabel.setText("For layout");
+        aAttLayLabel.setText("Attribute to use for layout");
         aAttLayLabel.setMaximumSize(new java.awt.Dimension(228, 14));
         aAttLayLabel.setMinimumSize(new java.awt.Dimension(228, 14));
         aAttLayLabel.setPreferredSize(new java.awt.Dimension(228, 14));
 
-        aAttNodLabel.setText("For node color");
+        aAttNodLabel.setText("Attribute to use for node color");
         aAttNodLabel.setMaximumSize(new java.awt.Dimension(228, 14));
         aAttNodLabel.setMinimumSize(new java.awt.Dimension(228, 14));
         aAttNodLabel.setPreferredSize(new java.awt.Dimension(228, 14));
@@ -545,7 +551,7 @@ public class MosaicSettingDialog extends JDialog
         rAnnPanel.setPreferredSize(new java.awt.Dimension(660, 140));
 
         rAnnMesLabel.setForeground(java.awt.Color.red);
-        rAnnMesLabel.setText("You need to first annotate this network with the GO terms!");
+        rAnnMesLabel.setText("You need to first annotate this network with the GO terms.");
 
         rAnnMesButton.setForeground(java.awt.Color.red);
         rAnnMesButton.setText("Annotate");
@@ -604,6 +610,7 @@ public class MosaicSettingDialog extends JDialog
         rAnnGOtLabel.setPreferredSize(new java.awt.Dimension(130, 14));
 
         rAnnGOtComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SlimMosaic", "SlimMosaic2", "SlimPIR", "SlimGeneric", "Full" }));
+        rAnnGOtComboBox.setToolTipText("We recommend SlimMosaic. GO Full will generate 100's of partitions and node colors.");
         rAnnGOtComboBox.setMinimumSize(new java.awt.Dimension(90, 18));
         rAnnGOtComboBox.setPreferredSize(new java.awt.Dimension(108, 18));
 
@@ -762,7 +769,7 @@ public class MosaicSettingDialog extends JDialog
         sParMorLabel.setMinimumSize(new java.awt.Dimension(228, 14));
         sParMorLabel.setPreferredSize(new java.awt.Dimension(228, 14));
 
-        sParLevLabel.setText("GO level cutoff for partition");
+        sParLevLabel.setText("GO level cutoff for partitioning");
         sParLevLabel.setMaximumSize(new java.awt.Dimension(228, 14));
         sParLevLabel.setMinimumSize(new java.awt.Dimension(228, 14));
         sParLevLabel.setPreferredSize(new java.awt.Dimension(228, 14));
@@ -788,7 +795,9 @@ public class MosaicSettingDialog extends JDialog
         sParMorTextField.setMinimumSize(new java.awt.Dimension(90, 18));
         sParMorTextField.setPreferredSize(new java.awt.Dimension(108, 18));
 
-        sParLevComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Deepest Level", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" }));
+        sParLevComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All the way", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" }));
+        sParLevComboBox.setSelectedIndex(2);
+        sParLevComboBox.setToolTipText("We recommend level 2, followed by interactive partitioning of specific terms of interest.");
         sParLevComboBox.setMinimumSize(new java.awt.Dimension(90, 18));
         sParLevComboBox.setPreferredSize(new java.awt.Dimension(108, 18));
 
@@ -1017,7 +1026,7 @@ public class MosaicSettingDialog extends JDialog
                 this.annotationButtonLabel = "Re-annotate";
                 rAnnMesButton.setText(this.annotationButtonLabel);
                 rAnnMesButton.setForeground(Color.BLACK);
-                rAnnMesLabel.setText("You can re-annotate this network and old annotation will be replaced.");
+                rAnnMesLabel.setText("You can optionally re-annotate this network and old annotation will be replaced.");
                 rAnnMesLabel.setForeground(Color.BLACK);
                 checkAnnotationStatus();
             } else {
@@ -1025,7 +1034,7 @@ public class MosaicSettingDialog extends JDialog
             }
         } else if (((JButton)evt.getSource()).getText().equals("Help!")) {
             JOptionPane.showConfirmDialog(Cytoscape.getDesktop(),
-                    "You need internet connection for downloading databases!",
+                    "You need internet connection for downloading databases.",
                     "Warning", JOptionPane.CLOSED_OPTION, JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_rAnnMesButtonActionPerformed
@@ -1165,7 +1174,7 @@ public class MosaicSettingDialog extends JDialog
         PartitionAlgorithm.NETWORK_LIMIT_MAX = new Integer(sParMorTextField.getText()).intValue();
         CellAlgorithm.distanceBetweenNodes = new Double(sParSpaTextField.getText()).doubleValue();
         CellAlgorithm.pruneEdges = sParCroCheckBox.isSelected();
-        if(sParLevComboBox.getSelectedItem().equals("Deepest Level")) {
+        if(sParLevComboBox.getSelectedItem().equals("All the way")) {
             PartitionAlgorithm.GO_LEVEL = 100;
         } else {
             PartitionAlgorithm.GO_LEVEL = new Integer(sParLevComboBox.getSelectedItem().toString()).intValue();
