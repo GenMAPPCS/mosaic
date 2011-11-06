@@ -15,14 +15,29 @@
  ******************************************************************************/
 package org.nrnb.mosaic;
 
-import csplugins.id.mapping.CyThesaurusPlugin;
-import org.nrnb.mosaic.partition.PartitionAlgorithm;
-import org.nrnb.mosaic.layout.PartitionNetworkVisualStyleFactory;
-import org.nrnb.mosaic.layout.CellAlgorithm;
-import org.nrnb.mosaic.utils.MosaicStaticValues;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+
+import org.nrnb.mosaic.layout.CellAlgorithm;
+import org.nrnb.mosaic.layout.PartitionNetworkVisualStyleFactory;
+import org.nrnb.mosaic.partition.MosaicNetworkPanel;
+import org.nrnb.mosaic.partition.PartitionAlgorithm;
+import org.nrnb.mosaic.setting.MosaicSettingDialog;
+import org.nrnb.mosaic.utils.IdMapping;
+import org.nrnb.mosaic.utils.MosaicStaticValues;
+import org.nrnb.mosaic.utils.MosaicUtil;
+
 import cytoscape.Cytoscape;
 import cytoscape.layout.CyLayouts;
 import cytoscape.logger.CyLogger;
@@ -34,20 +49,6 @@ import cytoscape.task.ui.JTaskConfig;
 import cytoscape.task.util.TaskManager;
 import cytoscape.view.CyNetworkView;
 import cytoscape.view.cytopanels.CytoPanel;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
-import org.nrnb.mosaic.partition.MosaicNetworkPanel;
-import org.nrnb.mosaic.setting.MosaicSettingDialog;
-import org.nrnb.mosaic.utils.MosaicUtil;
-//import org.nrnb.mosaic.utils.GpmlTest;
-import org.nrnb.mosaic.utils.IdMapping;
 
 
 public class Mosaic extends CytoscapePlugin{
