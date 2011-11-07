@@ -53,7 +53,7 @@ import cytoscape.view.cytopanels.CytoPanel;
 
 public class Mosaic extends CytoscapePlugin{
     public static final String pluginName = "Mosaic";
-    public static final String VERSION = " 1.0Beta(1102)";
+    public static final double VERSION = 1.0;
     private CyLogger logger;
     public static String MosaicBaseDir;
     public static String MosaicDatabaseDir;
@@ -173,7 +173,7 @@ class MosaicPluginActionListener implements ActionListener {
         try {
             if(!MosaicUtil.checkCyThesaurus()) {
                 JOptionPane.showMessageDialog(Cytoscape.getDesktop(),
-                        "Please install CyThesaurus plugin first!", Mosaic.pluginName,
+                        "CyThesaurus 1.31 or later verion is necessary for runing Mosaic!", Mosaic.pluginName,
                         JOptionPane.WARNING_MESSAGE);
             } else {
 
