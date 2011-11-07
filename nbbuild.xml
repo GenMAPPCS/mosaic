@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- build.xml - Build file for Sample Cytoscape Plugin -->
 <project name="Mosaic" default="jar" basedir=".">
-    <description>Builds, tests, and runs the project Mosaic.</description>
+    <description>Builds, tests, and runs the project GOLayout.</description>
     <import file="nbproject/build-impl.xml"/>
 
     <!-- =================================================================== -->
@@ -22,7 +22,7 @@
         <property name="doc.dir" value="doc"/>
         <property name="plugindata.dir" value="data"/>
         <!-- Check out this folder and reference *.jar in build path -->
-        <property name="commonlib.dir" value="../Plugins/libs/gpml"/>
+        <property name="commonlib.dir" value="dist"/>
         <!-- Global "magic" property for <javac> -->
         <property name="build.compiler" value="modern"/>
         <!--  The directory containing library jar files -->
@@ -88,7 +88,7 @@
 
     <!--  Create PlugIn Jar File (Unobfuscated) -->
     <target name="jar" depends="compile" description="Creates PlugIn Jar File.">
-        <copy file="plugin.props" todir="${build.classes}/org/nrnb/mosaic/"/>
+        <copy file="plugin.props" todir="${build.classes}/org/genmapp/mosaic/"/>
         <copy todir="${build.resources}">
             <fileset dir="${resources.dir}"/>
         </copy>
@@ -104,7 +104,6 @@
 
         <echo message="${plugin.name}.jar is now complete.  It is located in build/ directory"/>
 
-        <!--<copy file="${build.dir}/${plugin.name}.jar" todir="${release.dir}/plugins"/>-->
         <copy file="${build.dir}/${plugin.name}.jar" todir="${basedir}/dist"/>
     </target>
     
