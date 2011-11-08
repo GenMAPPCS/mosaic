@@ -27,14 +27,14 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="ButtonPanel" alignment="0" max="32767" attributes="1"/>
                   <Component id="aSelPanel" alignment="0" max="32767" attributes="2"/>
-                  <Component id="rAnnPanel" alignment="0" pref="672" max="32767" attributes="2"/>
+                  <Component id="rAnnPanel" alignment="0" pref="666" max="32767" attributes="2"/>
                   <Component id="sParPanel" alignment="0" max="32767" attributes="2"/>
                   <Component id="lTepPanel" alignment="0" max="32767" attributes="1"/>
-                  <Component id="ButtonPanel" alignment="0" max="32767" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -43,16 +43,17 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="aSelPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="rAnnPanel" min="-2" pref="111" max="-2" attributes="2"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="sParPanel" min="-2" max="-2" attributes="2"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="lTepPanel" min="-2" max="-2" attributes="1"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="lTepPanel" max="32767" attributes="2"/>
+              <Component id="ButtonPanel" min="-2" pref="41" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="ButtonPanel" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -83,15 +84,15 @@
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="aAttLayComboBox" alignment="0" pref="225" max="32767" attributes="2"/>
-                      <Component id="aAttParComboBox" alignment="0" pref="225" max="32767" attributes="2"/>
-                      <Component id="aAttNodComboBox" pref="225" max="32767" attributes="2"/>
+                      <Component id="aAttLayComboBox" alignment="0" pref="222" max="32767" attributes="2"/>
+                      <Component id="aAttParComboBox" alignment="0" pref="222" max="32767" attributes="2"/>
+                      <Component id="aAttNodComboBox" pref="222" max="32767" attributes="2"/>
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="aAttParRateLabel" alignment="0" pref="227" max="32767" attributes="2"/>
-                      <Component id="aAttLayRateLabel" alignment="1" pref="227" max="32767" attributes="0"/>
-                      <Component id="aAttNodRateLabel" alignment="1" pref="227" max="32767" attributes="0"/>
+                      <Component id="aAttParRateLabel" alignment="0" pref="224" max="32767" attributes="2"/>
+                      <Component id="aAttLayRateLabel" alignment="1" pref="224" max="32767" attributes="0"/>
+                      <Component id="aAttNodRateLabel" alignment="1" pref="224" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -258,8 +259,8 @@
                           </Group>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="rAnnIdeComboBox" pref="120" max="32767" attributes="0"/>
-                              <Component id="rAnnSpeComboBox" alignment="0" pref="120" max="32767" attributes="0"/>
+                              <Component id="rAnnIdeComboBox" pref="117" max="32767" attributes="0"/>
+                              <Component id="rAnnSpeComboBox" alignment="0" pref="117" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
@@ -267,13 +268,13 @@
                               <Component id="rAnnTypLabel" alignment="1" min="-2" pref="168" max="-2" attributes="1"/>
                           </Group>
                       </Group>
-                      <Component id="rAnnMesLabel" pref="516" max="32767" attributes="0"/>
+                      <Component id="rAnnMesLabel" pref="513" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="rAnnMesButton" alignment="1" pref="120" max="32767" attributes="0"/>
-                      <Component id="rAnnGOtComboBox" alignment="1" pref="120" max="32767" attributes="2"/>
-                      <Component id="rAnnTypComboBox" alignment="1" pref="120" max="32767" attributes="2"/>
+                      <Component id="rAnnMesButton" alignment="1" pref="117" max="32767" attributes="0"/>
+                      <Component id="rAnnGOtComboBox" alignment="1" pref="117" max="32767" attributes="2"/>
+                      <Component id="rAnnTypComboBox" alignment="1" pref="117" max="32767" attributes="2"/>
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
@@ -450,12 +451,11 @@
         <Component class="javax.swing.JComboBox" name="rAnnGOtComboBox">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="5">
+              <StringArray count="4">
                 <StringItem index="0" value="SlimMosaic"/>
-                <StringItem index="1" value="SlimMosaic2"/>
-                <StringItem index="2" value="SlimPIR"/>
-                <StringItem index="3" value="SlimGeneric"/>
-                <StringItem index="4" value="Full"/>
+                <StringItem index="1" value="SlimPIR"/>
+                <StringItem index="2" value="SlimGeneric"/>
+                <StringItem index="3" value="Full"/>
               </StringArray>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -512,7 +512,7 @@
                       <Component id="lTepCusRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lTepCusButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="16" max="32767" attributes="0"/>
+                  <EmptySpace pref="24" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -584,7 +584,7 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="18" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="cancelButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="submitButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -646,9 +646,9 @@
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="sParMorTextField" alignment="0" pref="120" max="32767" attributes="2"/>
-                      <Component id="sParFewTextField" alignment="0" pref="120" max="32767" attributes="2"/>
-                      <Component id="sParLevComboBox" pref="120" max="32767" attributes="0"/>
+                      <Component id="sParMorTextField" alignment="0" pref="117" max="32767" attributes="2"/>
+                      <Component id="sParFewTextField" alignment="0" pref="117" max="32767" attributes="2"/>
+                      <Component id="sParLevComboBox" pref="117" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
@@ -658,9 +658,9 @@
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="sParPatComboBox" alignment="0" pref="120" max="32767" attributes="0"/>
-                      <Component id="sParCroCheckBox" alignment="0" pref="120" max="32767" attributes="0"/>
-                      <Component id="sParSpaTextField" alignment="1" pref="120" max="32767" attributes="0"/>
+                      <Component id="sParPatComboBox" alignment="0" pref="117" max="32767" attributes="0"/>
+                      <Component id="sParCroCheckBox" alignment="0" pref="117" max="32767" attributes="0"/>
+                      <Component id="sParSpaTextField" alignment="1" pref="117" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
@@ -802,6 +802,7 @@
                 <StringItem index="14" value="14"/>
               </StringArray>
             </Property>
+            <Property name="selectedIndex" type="int" value="2"/>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[90, 18]"/>
             </Property>

@@ -61,7 +61,7 @@ public class MosaicSettingDialog extends JDialog
     /** Creates new form MosaicSettingPanel */
     public MosaicSettingDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.setTitle(Mosaic.pluginName+" Settings"+ " "+Mosaic.VERSION + "Beta (1107)");
+        this.setTitle(Mosaic.pluginName+" Settings"+ " "+Mosaic.VERSION);
         loadCurrentValues();
         initComponents();
         initValues();
@@ -510,14 +510,14 @@ public class MosaicSettingDialog extends JDialog
                     .addComponent(aAttParLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(aSelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(aAttLayComboBox, 0, 225, Short.MAX_VALUE)
-                    .addComponent(aAttParComboBox, 0, 225, Short.MAX_VALUE)
-                    .addComponent(aAttNodComboBox, 0, 225, Short.MAX_VALUE))
+                    .addComponent(aAttLayComboBox, 0, 222, Short.MAX_VALUE)
+                    .addComponent(aAttParComboBox, 0, 222, Short.MAX_VALUE)
+                    .addComponent(aAttNodComboBox, 0, 222, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(aSelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(aAttParRateLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                    .addComponent(aAttLayRateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                    .addComponent(aAttNodRateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE))
+                    .addComponent(aAttParRateLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                    .addComponent(aAttLayRateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                    .addComponent(aAttNodRateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE))
                 .addContainerGap())
         );
         aSelPanelLayout.setVerticalGroup(
@@ -602,7 +602,7 @@ public class MosaicSettingDialog extends JDialog
         rAnnGOtLabel.setMinimumSize(new java.awt.Dimension(130, 14));
         rAnnGOtLabel.setPreferredSize(new java.awt.Dimension(130, 14));
 
-        rAnnGOtComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SlimMosaic", "SlimMosaic2", "SlimPIR", "SlimGeneric", "Full" }));
+        rAnnGOtComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SlimMosaic", "SlimPIR", "SlimGeneric", "Full" }));
         rAnnGOtComboBox.setMinimumSize(new java.awt.Dimension(90, 18));
         rAnnGOtComboBox.setPreferredSize(new java.awt.Dimension(108, 18));
 
@@ -619,18 +619,18 @@ public class MosaicSettingDialog extends JDialog
                             .addComponent(rAnnSpeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(rAnnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rAnnIdeComboBox, 0, 120, Short.MAX_VALUE)
-                            .addComponent(rAnnSpeComboBox, 0, 120, Short.MAX_VALUE))
+                            .addComponent(rAnnIdeComboBox, 0, 117, Short.MAX_VALUE)
+                            .addComponent(rAnnSpeComboBox, 0, 117, Short.MAX_VALUE))
                         .addGap(44, 44, 44)
                         .addGroup(rAnnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(rAnnGOtLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(rAnnTypLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(rAnnMesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE))
+                    .addComponent(rAnnMesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(rAnnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rAnnMesButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                    .addComponent(rAnnGOtComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 120, Short.MAX_VALUE)
-                    .addComponent(rAnnTypComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 120, Short.MAX_VALUE))
+                    .addComponent(rAnnMesButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(rAnnGOtComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 117, Short.MAX_VALUE)
+                    .addComponent(rAnnTypComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 117, Short.MAX_VALUE))
                 .addContainerGap())
         );
         rAnnPanelLayout.setVerticalGroup(
@@ -710,7 +710,7 @@ public class MosaicSettingDialog extends JDialog
                     .addComponent(lTepCusTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lTepCusRadioButton)
                     .addComponent(lTepCusButton))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         submitButton.setText("Run");
@@ -745,7 +745,7 @@ public class MosaicSettingDialog extends JDialog
         ButtonPanelLayout.setVerticalGroup(
             ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ButtonPanelLayout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(submitButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -791,6 +791,7 @@ public class MosaicSettingDialog extends JDialog
         sParMorTextField.setPreferredSize(new java.awt.Dimension(108, 18));
 
         sParLevComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All the way", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" }));
+        sParLevComboBox.setSelectedIndex(2);
         sParLevComboBox.setMinimumSize(new java.awt.Dimension(90, 18));
         sParLevComboBox.setPreferredSize(new java.awt.Dimension(108, 18));
 
@@ -831,9 +832,9 @@ public class MosaicSettingDialog extends JDialog
                     .addComponent(sParLevLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(2, 2, 2)
                 .addGroup(sParPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sParMorTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                    .addComponent(sParFewTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                    .addComponent(sParLevComboBox, 0, 120, Short.MAX_VALUE))
+                    .addComponent(sParMorTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(sParFewTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(sParLevComboBox, 0, 117, Short.MAX_VALUE))
                 .addGap(46, 46, 46)
                 .addGroup(sParPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(sParPatLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -841,9 +842,9 @@ public class MosaicSettingDialog extends JDialog
                     .addComponent(sParCroLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(sParPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sParPatComboBox, 0, 120, Short.MAX_VALUE)
-                    .addComponent(sParCroCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                    .addComponent(sParSpaTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+                    .addComponent(sParPatComboBox, 0, 117, Short.MAX_VALUE)
+                    .addComponent(sParCroCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(sParSpaTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
                 .addContainerGap())
         );
         sParPanelLayout.setVerticalGroup(
@@ -874,14 +875,14 @@ public class MosaicSettingDialog extends JDialog
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(aSelPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rAnnPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE)
-                    .addComponent(sParPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lTepPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(ButtonPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(aSelPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rAnnPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE)
+                    .addComponent(sParPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lTepPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -894,9 +895,10 @@ public class MosaicSettingDialog extends JDialog
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sParPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lTepPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lTepPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(ButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();

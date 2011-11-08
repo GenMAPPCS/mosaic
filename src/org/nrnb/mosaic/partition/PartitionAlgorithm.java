@@ -656,13 +656,9 @@ public class PartitionAlgorithm extends AbstractLayout implements
                 //Temporarily comment those unimplemented functions
 				System.out.println("*******************Build sub network overview***********************");
                 buildSubnetworkOverview(net);
+                Mosaic.wsPanel.focusNetworkNode(net.getIdentifier());
 				tileNetworkViews(); // tile and fit content in each view
                 System.out.println("*******************End***********************");
-                Set<CyNetwork> aaa = Cytoscape.getNetworkSet();
-                //System.out.println(Cytoscape.getNetworkSet());
-                //for(CyNetwork a:aaa)
-                //    System.out.println(a.getIdentifier()+" : "+a.getTitle()+" : "+Cytoscape.viewExists(a.getIdentifier()));
-                //System.out.println("en_network"+" : "+Cytoscape.viewExists("en_network"));
 			}
 		}
 	}
