@@ -51,9 +51,9 @@ import cytoscape.view.CyNetworkView;
 import cytoscape.view.cytopanels.CytoPanel;
 
 
-public class Mosaic extends CytoscapePlugin{
-    public static final String pluginName = "Mosaic";
-    public static final double VERSION = 1.0;
+public final class Mosaic extends CytoscapePlugin{
+    public static String pluginName = "Mosaic";
+    public static double VERSION = 1.5;
     private CyLogger logger;
     public static String MosaicBaseDir;
     public static String MosaicDatabaseDir;
