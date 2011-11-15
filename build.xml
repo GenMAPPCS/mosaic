@@ -95,11 +95,16 @@
         <copy todir="${build.images}">
             <fileset dir="${images}"/>
         </copy>
+    	<!--
         <unjar dest="${build.classes}">
          <fileset dir="${pluginlib.dir}"/>
         </unjar>		
+        -->
         <jar destfile="${build.dir}/${plugin.name}.jar">
             <fileset dir="${build.classes}"/>
+			<manifest>
+				<attribute name="Cytoscape-Plugin" value="org.nrnb.mosaic.Mosaic" />
+			</manifest>
         </jar>
    		 
         <echo message="${plugin.name}.jar is now complete.  It is located in build/ directory"/>
