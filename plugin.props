@@ -29,6 +29,3 @@ projectURL=http://pinscher.ucsf.edu/meta/trunk/mosaic/
 # List of authors.  Note each author and institution pair are separated by a : (colon)
 # each additional author institution pair must be separated from other pairs bye a ; (semicolon)
 pluginAuthorsInstitutions=Chao Zhang:University of Missouri & GSoC;Alexander Pico:Gladstone Institutes, UCSF;Kristina Hanspers:Gladstone Institutes, UCSF;Allan Kuchinsky:Aglient Technologies;Nathan Salomonis:Gladstone Institutes, UCSF
-
-# Date this plugin/plugin version was released
-releaseDate=Nov 5, 2011
