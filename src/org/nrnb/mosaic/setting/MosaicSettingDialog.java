@@ -449,17 +449,17 @@ public class MosaicSettingDialog extends JDialog
 
         aSelPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Attributes"));
 
-        aAttParLabel.setText("Attribute to use for partitioning");
+        aAttParLabel.setText("Attribute for partitioning");
         aAttParLabel.setMaximumSize(new java.awt.Dimension(180, 14));
         aAttParLabel.setMinimumSize(new java.awt.Dimension(180, 14));
         aAttParLabel.setPreferredSize(new java.awt.Dimension(180, 14));
 
-        aAttLayLabel.setText("Attribute to use for layout");
+        aAttLayLabel.setText("Attribute for layout");
         aAttLayLabel.setMaximumSize(new java.awt.Dimension(180, 14));
         aAttLayLabel.setMinimumSize(new java.awt.Dimension(180, 14));
         aAttLayLabel.setPreferredSize(new java.awt.Dimension(180, 14));
 
-        aAttNodLabel.setText("Attribute to use for node color");
+        aAttNodLabel.setText("Attribute for node color");
         aAttNodLabel.setMaximumSize(new java.awt.Dimension(180, 14));
         aAttNodLabel.setMinimumSize(new java.awt.Dimension(180, 14));
         aAttNodLabel.setPreferredSize(new java.awt.Dimension(180, 14));
@@ -605,6 +605,11 @@ public class MosaicSettingDialog extends JDialog
         rAnnGOtComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SlimMosaic", "SlimPIR", "SlimGeneric", "Full" }));
         rAnnGOtComboBox.setMinimumSize(new java.awt.Dimension(90, 18));
         rAnnGOtComboBox.setPreferredSize(new java.awt.Dimension(108, 18));
+        rAnnGOtComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	rAnnGOtComboBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout rAnnPanelLayout = new javax.swing.GroupLayout(rAnnPanel);
         rAnnPanel.setLayout(rAnnPanelLayout);
@@ -764,7 +769,7 @@ public class MosaicSettingDialog extends JDialog
         sParMorLabel.setMinimumSize(new java.awt.Dimension(180, 14));
         sParMorLabel.setPreferredSize(new java.awt.Dimension(180, 14));
 
-        sParLevLabel.setText("GO level cutoff for partitioning");
+        sParLevLabel.setText("GO level for partitioning");
         sParLevLabel.setMaximumSize(new java.awt.Dimension(180, 14));
         sParLevLabel.setMinimumSize(new java.awt.Dimension(180, 14));
         sParLevLabel.setPreferredSize(new java.awt.Dimension(180, 14));
@@ -791,7 +796,7 @@ public class MosaicSettingDialog extends JDialog
         sParMorTextField.setPreferredSize(new java.awt.Dimension(108, 18));
 
         sParLevComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All the way", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" }));
-        sParLevComboBox.setSelectedIndex(2);
+        sParLevComboBox.setSelectedIndex(0);
         sParLevComboBox.setMinimumSize(new java.awt.Dimension(90, 18));
         sParLevComboBox.setPreferredSize(new java.awt.Dimension(108, 18));
 
@@ -903,6 +908,16 @@ public class MosaicSettingDialog extends JDialog
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void rAnnGOtComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
+    	String GOtype = rAnnGOtComboBox.getSelectedItem().toString();
+    	if (GOtype.equals("Full")){
+    		sParLevComboBox.setSelectedIndex(2);
+    	} else {
+    		sParLevComboBox.setSelectedIndex(0);
+    	}
+        
+    }
 
     private void sParFewTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sParFewTextFieldActionPerformed
         // TODO add your handling code here:

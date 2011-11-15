@@ -126,7 +126,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="aAttParLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Attribute to use for partitioning"/>
+            <Property name="text" type="java.lang.String" value="Attribute for partitioning"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[180, 14]"/>
             </Property>
@@ -140,7 +140,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="aAttLayLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Attribute to use for layout"/>
+            <Property name="text" type="java.lang.String" value="Attribute for layout"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[180, 14]"/>
             </Property>
@@ -154,7 +154,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="aAttNodLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Attribute to use for node color"/>
+            <Property name="text" type="java.lang.String" value="Attribute for node color"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[180, 14]"/>
             </Property>
@@ -727,7 +727,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="sParLevLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="GO level cutoff for partitioning"/>
+            <Property name="text" type="java.lang.String" value="GO level for partitioning"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[180, 14]"/>
             </Property>
