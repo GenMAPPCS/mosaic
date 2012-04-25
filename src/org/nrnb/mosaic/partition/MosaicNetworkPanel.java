@@ -17,9 +17,11 @@ package org.nrnb.mosaic.partition;
 
 import cytoscape.CyNetwork;
 import cytoscape.CyNetworkTitleChange;
+import cytoscape.CyNode;
 import cytoscape.Cytoscape;
 import cytoscape.actions.ApplyVisualStyleAction;
 import cytoscape.actions.CreateNetworkViewAction;
+import cytoscape.data.CyAttributes;
 import cytoscape.data.SelectEvent;
 import cytoscape.data.SelectEventListener;
 import cytoscape.logger.CyLogger;
@@ -59,7 +61,9 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -78,6 +82,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+import org.nrnb.mosaic.layout.CellAlgorithm;
 import org.nrnb.mosaic.layout.PartitionNetworkVisualStyleFactory;
 import org.nrnb.mosaic.utils.MosaicStaticValues;
 import org.nrnb.mosaic.utils.MosaicUtil;
@@ -102,9 +107,11 @@ public class MosaicNetworkPanel extends JPanel implements PropertyChangeListener
 	private JPanel functionPanel;
     private JComboBox functionComboBox;
     private ChangeFunctionListener changeFunctionListener;
+    private JCheckBox nodeSelectionBox;
+    private JLabel nodeSelectionLabel;
     private JButton functionLegendButton;
     private LegendPanel legendPanel;
-    private JPanel legendLabelPanel;
+    //private JPanel legendLabelPanel;
 	private JPanel networkTreePanel;
 	private JPopupMenu popup;
 	private PopupActionListener popupActionListener;
@@ -173,14 +180,14 @@ public class MosaicNetworkPanel extends JPanel implements PropertyChangeListener
         setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(PANEL_PREFFERED_WIDTH, 700));
 		setMinimumSize(new Dimension(PANEL_PREFFERED_WIDTH, PANEL_PREFFERED_WIDTH));
-        
-		functionPanel = new JPanel();
+
+        functionPanel = new JPanel();
         functionPanel.setBorder(BorderFactory.createTitledBorder(null,"Node color selection",
                 TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION,
                 new Font("SansSerif", 1, 12), Color.darkGray));
-		functionPanel.setMinimumSize(new Dimension(PANEL_PREFFERED_WIDTH, 75));
+        functionPanel.setMinimumSize(new Dimension(PANEL_PREFFERED_WIDTH, 75));
         functionPanel.setMaximumSize(new Dimension(10000, 80));
-		functionPanel.setPreferredSize(new Dimension(PANEL_PREFFERED_WIDTH, 75));
+        functionPanel.setPreferredSize(new Dimension(PANEL_PREFFERED_WIDTH, 75));
         functionPanel.setLayout(new BoxLayout(functionPanel, BoxLayout.Y_AXIS));
         String[] functionList = {"Show all", "---------"};
         functionComboBox = new JComboBox(functionList);
@@ -189,11 +196,23 @@ public class MosaicNetworkPanel extends JPanel implements PropertyChangeListener
         functionComboBox.addActionListener(changeFunctionListener);
         functionComboBox.setEnabled(false);
         JPanel legendButtonPanel = new JPanel();
-        legendButtonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 3));
-        functionLegendButton = new JButton("View legend");
+        legendButtonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 3));
+        //legendButtonPanel.setLayout(new BoxLayout(legendButtonPanel, BoxLayout.X_AXIS));
+        nodeSelectionBox = new JCheckBox();
+        nodeSelectionBox.addActionListener(new NodeSelectListener());
+        nodeSelectionBox.setEnabled(false);
+        nodeSelectionBox.setSelected(false);
+        nodeSelectionLabel = new JLabel("Select nodes");
+        nodeSelectionLabel.setEnabled(false);
+        JLabel splitLabel = new JLabel("   ");
+        functionLegendButton = new JButton("View  legend");
         functionLegendButton.addActionListener(new ViewLegendListener());
         functionLegendButton.setEnabled(false);
+        legendButtonPanel.add(nodeSelectionBox);
+        legendButtonPanel.add(nodeSelectionLabel);
+        legendButtonPanel.add(splitLabel);
         legendButtonPanel.add(functionLegendButton);
+
         functionPanel.add(legendButtonPanel);
 
         legendPanel = new LegendPanel();
@@ -201,20 +220,7 @@ public class MosaicNetworkPanel extends JPanel implements PropertyChangeListener
                 TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION,
                 new Font("SansSerif", 1, 12), Color.darkGray));
         legendPanel.setVisible(false);
-//        legendPanel = new JPanel();
-//        legendPanel.setBorder(BorderFactory.createTitledBorder(null,"Legend",
-//                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION,
-//                new Font("SansSerif", 1, 12), Color.darkGray));
-//        //legendPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-//        legendPanel.setMinimumSize(new Dimension(PANEL_PREFFERED_WIDTH, 50));
-//        legendPanel.setMaximumSize(new Dimension(10000, 200));
-//        legendPanel.setPreferredSize(new Dimension(PANEL_PREFFERED_WIDTH, 150));
-//        legendPanel.setVisible(false);
-//        legendLabelPanel = new JPanel();
-//        final JScrollPane legendScrollPane = new JScrollPane(legendLabelPanel);
-//        legendScrollPane.setPreferredSize(new Dimension(PANEL_PREFFERED_WIDTH-50,150));
-//		legendPanel.add(legendScrollPane);
-
+        
 		networkTreePanel = new JPanel();
         networkTreePanel.setBorder(BorderFactory.createTitledBorder(null,"",
                 TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION,
@@ -240,8 +246,10 @@ public class MosaicNetworkPanel extends JPanel implements PropertyChangeListener
     
         contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.add(functionPanel);
-        contentPanel.add(legendPanel);
+        //if (null != CellAlgorithm.attributeName) {
+            contentPanel.add(functionPanel);
+            contentPanel.add(legendPanel);
+        //}
         //contentPanel.add(new ScrollDemo2());
         contentPanel.add(networkTreePanel);
         add(contentPanel);
@@ -341,6 +349,8 @@ public class MosaicNetworkPanel extends JPanel implements PropertyChangeListener
         functionComboBox.setModel(new DefaultComboBoxModel(result.toArray()));
         functionComboBox.setEnabled(true);
         functionLegendButton.setEnabled(true);
+        nodeSelectionBox.setEnabled(true);
+        nodeSelectionLabel.setEnabled(true);
 	}
 
 	/**
@@ -595,19 +605,77 @@ public class MosaicNetworkPanel extends JPanel implements PropertyChangeListener
         public void actionPerformed(ActionEvent e) {
             String buttonText = ((JButton)e.getSource()).getText();
             contentPanel.invalidate();
-            if(buttonText.equals("View legend")) {
+            if(buttonText.equals("View  legend")) {
                 functionLegendButton.setText("Close legend");                
                 //legendPanel.setMinimumSize(new Dimension(PANEL_PREFFERED_WIDTH, 50));
                 //legendPanel.setMaximumSize(new Dimension(10000, 150));
                 //legendPanel.setPreferredSize(new Dimension(PANEL_PREFFERED_WIDTH, 75));
                 legendPanel.setVisible(true);
             } else {
-                functionLegendButton.setText("View legend");
+                functionLegendButton.setText("View  legend");
                 legendPanel.setVisible(false);
             }
             contentPanel.revalidate();
             contentPanel.repaint();
             contentPanel.validate();
+        }
+    }
+    
+    /**
+	 * This class listens to mouse events from the TreeTable, if the mouse event
+	 * is one that is canonically associated with a popup menu (ie, a right
+	 * click) it will pop up the menu with option for destroying view, creating
+	 * view, and destroying network (this is platform specific apparently)
+	 */
+	protected class NodeSelectListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            Boolean selectTag = ((JCheckBox)e.getSource()).isSelected();
+            if(!selectTag) {
+                Cytoscape.getCurrentNetwork().unselectAllNodes();
+            } else {
+                String selectedGOTerm = functionComboBox.getSelectedItem().toString();                
+                if(!selectedGOTerm.equals("---------")) {
+                    if(!descGOMappingFile.isEmpty()) {
+                        if(!selectedGOTerm.equals("Show all")) {
+                            selectedGOTerm = descGOMappingFile.get(selectedGOTerm).toString();
+                            selectNodesWithGO(selectedGOTerm);
+                        } else {
+                            Cytoscape.getCurrentNetwork().selectAllNodes();
+                        }
+                    } else {
+                        if(!selectedGOTerm.equals("Show all")) {
+                            selectNodesWithGO(selectedGOTerm);
+                        } else {
+                            Cytoscape.getCurrentNetwork().selectAllNodes();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void selectNodesWithGO(String GOterm){
+        String attributeName = PartitionNetworkVisualStyleFactory.attributeName;
+        Cytoscape.getCurrentNetwork().nodesList();
+        CyAttributes attribs = Cytoscape.getNodeAttributes();
+		Iterator<CyNode> it = Cytoscape.getCurrentNetwork().nodesIterator();
+		while (it.hasNext()) {
+            CyNode node = it.next();
+            if (attribs.getType(attributeName) == CyAttributes.TYPE_SIMPLE_LIST) {
+				List valList = attribs.getListAttribute(node.getIdentifier(), attributeName);
+                for(Object o:valList) {
+                    if(o.toString().indexOf(GOterm)!=-1) {
+                        Cytoscape.getCurrentNetwork().setSelectedNodeState(node, true);
+                        break;
+                    }
+                }
+			} else {
+				String valCheck = attribs.getStringAttribute(node.getIdentifier(), attributeName);
+                if((valCheck != null)&&(!valCheck.equals(""))) {
+                    if(valCheck.indexOf(GOterm)!=-1)
+                        Cytoscape.getCurrentNetwork().setSelectedNodeState(node, true);
+                }
+			}
         }
     }
 
@@ -620,10 +688,26 @@ public class MosaicNetworkPanel extends JPanel implements PropertyChangeListener
 	protected class ChangeFunctionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String selectedGOTerm = ((JComboBox)e.getSource()).getSelectedItem().toString();
+            Boolean selectTag = nodeSelectionBox.isSelected();
+            Cytoscape.getCurrentNetwork().unselectAllNodes();
             if(!selectedGOTerm.equals("---------")) {
                 if(!descGOMappingFile.isEmpty()) {
-                    if(!selectedGOTerm.equals("Show all"))
+                    if(!selectedGOTerm.equals("Show all")) {
                         selectedGOTerm = descGOMappingFile.get(((JComboBox)e.getSource()).getSelectedItem()).toString();
+                        if(selectTag)
+                            selectNodesWithGO(selectedGOTerm);
+                    } else {
+                        if(selectTag)
+                            Cytoscape.getCurrentNetwork().selectAllNodes();
+                    }
+                } else {
+                    if(!selectedGOTerm.equals("Show all")) {
+                        if(selectTag)
+                            selectNodesWithGO(selectedGOTerm);
+                    } else {
+                        if(selectTag)
+                            Cytoscape.getCurrentNetwork().selectAllNodes();
+                    }
                 }
                 PartitionNetworkVisualStyleFactory.highlightNodes(selectedGOTerm);
             }
