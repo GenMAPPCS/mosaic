@@ -73,7 +73,10 @@ public class PartitionAlgorithm extends AbstractLayout implements
     public static int GO_LEVEL = 100;
 	private static final int SUBNETWORK_COUNT_WARNING = 100; // will warn if >
 	public static final String SUBNETWORK_CONNECTIONS = "_subnetworkConnections";
-	public static final String SUBNETWORK_SIZE = "_subnetworkSize";
+	public static final String SUBNETWORK_SIZE = "subnetworkSize";
+    public static final String NODES_NAMES = "evidences";
+    public static final String NODES_INCOMMON = "commonEvidences";
+    public static final String NUMBER_INCOMMON = "overlapCount";
     public Map<String, String> goDescMappingFile = new HashMap<String, String>();
     private Object[][] networkTreeArray;
     private CyNetwork rootNetwork;
@@ -278,10 +281,28 @@ public class PartitionAlgorithm extends AbstractLayout implements
 		Iterator<CyNode> nodeIt = overview_network.nodesIterator();
 		while (nodeIt.hasNext()) {
 			String nodeId = nodeIt.next().getIdentifier();
-            nAttributes.setAttribute(nodeId, SUBNETWORK_SIZE,
-					attributeValueNodeMap.get(nodeId).size());
-		}
-
+            List<CyNode> nodeList = attributeValueNodeMap.get(nodeId);
+            nAttributes.setAttribute(nodeId, SUBNETWORK_SIZE, nodeList.size());
+            List nodeNameList = new ArrayList();
+            for(CyNode cnode:nodeList)
+                nodeNameList.add(cnode.getIdentifier());
+            nAttributes.setListAttribute(nodeId, NODES_NAMES, nodeNameList);
+        }
+        Iterator<CyEdge> edgeIt = overview_network.edgesIterator();
+        while (edgeIt.hasNext()) {
+			CyEdge cedge = edgeIt.next();
+            String sourceNode = cedge.getSource().getIdentifier();
+            String targetNode = cedge.getTarget().getIdentifier();
+            List commonNodeNameList = new ArrayList();
+            List<CyNode> sourceNodeList = attributeValueNodeMap.get(sourceNode);
+            List<CyNode> targetNodeList = attributeValueNodeMap.get(targetNode);
+            for(CyNode cnode:sourceNodeList) {
+                if(targetNodeList.indexOf(cnode)!=-1)
+                    commonNodeNameList.add(cnode.getIdentifier());
+            }
+            eAttributes.setListAttribute(cedge.getIdentifier(), NODES_INCOMMON, commonNodeNameList);
+            eAttributes.setAttribute(cedge.getIdentifier(), NUMBER_INCOMMON, commonNodeNameList.size());
+        }
 		Cytoscape.getVisualMappingManager().setVisualStyle(
 				PartitionNetworkVisualStyleFactory.attributeName);
 		CyLayoutAlgorithm layout = CyLayouts.getLayout("degree-circle");

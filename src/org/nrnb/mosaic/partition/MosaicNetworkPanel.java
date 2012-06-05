@@ -43,6 +43,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -61,7 +62,6 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.InputMap;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -82,7 +82,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-import org.nrnb.mosaic.layout.CellAlgorithm;
 import org.nrnb.mosaic.layout.PartitionNetworkVisualStyleFactory;
 import org.nrnb.mosaic.utils.MosaicStaticValues;
 import org.nrnb.mosaic.utils.MosaicUtil;
@@ -107,11 +106,9 @@ public class MosaicNetworkPanel extends JPanel implements PropertyChangeListener
 	private JPanel functionPanel;
     private JComboBox functionComboBox;
     private ChangeFunctionListener changeFunctionListener;
-    private JCheckBox nodeSelectionBox;
-    private JLabel nodeSelectionLabel;
+    private JButton nodeSelectionButton;
     private JButton functionLegendButton;
     private LegendPanel legendPanel;
-    //private JPanel legendLabelPanel;
 	private JPanel networkTreePanel;
 	private JPopupMenu popup;
 	private PopupActionListener popupActionListener;
@@ -198,18 +195,16 @@ public class MosaicNetworkPanel extends JPanel implements PropertyChangeListener
         JPanel legendButtonPanel = new JPanel();
         legendButtonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 3));
         //legendButtonPanel.setLayout(new BoxLayout(legendButtonPanel, BoxLayout.X_AXIS));
-        nodeSelectionBox = new JCheckBox();
-        nodeSelectionBox.addActionListener(new NodeSelectListener());
-        nodeSelectionBox.setEnabled(false);
-        nodeSelectionBox.setSelected(false);
-        nodeSelectionLabel = new JLabel("Select nodes");
-        nodeSelectionLabel.setEnabled(false);
-        JLabel splitLabel = new JLabel("   ");
+        nodeSelectionButton = new JButton("Select nodes");
+        nodeSelectionButton.setMargin(new Insets(3,3,3,3));
+        nodeSelectionButton.addActionListener(new NodeSelectListener());
+        nodeSelectionButton.setEnabled(false);
+        JLabel splitLabel = new JLabel(" | ");
         functionLegendButton = new JButton("View  legend");
+        functionLegendButton.setMargin(new Insets(3,3,3,3));
         functionLegendButton.addActionListener(new ViewLegendListener());
         functionLegendButton.setEnabled(false);
-        legendButtonPanel.add(nodeSelectionBox);
-        legendButtonPanel.add(nodeSelectionLabel);
+        legendButtonPanel.add(nodeSelectionButton);
         legendButtonPanel.add(splitLabel);
         legendButtonPanel.add(functionLegendButton);
 
@@ -349,8 +344,7 @@ public class MosaicNetworkPanel extends JPanel implements PropertyChangeListener
         functionComboBox.setModel(new DefaultComboBoxModel(result.toArray()));
         functionComboBox.setEnabled(true);
         functionLegendButton.setEnabled(true);
-        nodeSelectionBox.setEnabled(true);
-        nodeSelectionLabel.setEnabled(true);
+        nodeSelectionButton.setEnabled(true);
 	}
 
 	/**
@@ -629,25 +623,20 @@ public class MosaicNetworkPanel extends JPanel implements PropertyChangeListener
 	 */
 	protected class NodeSelectListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            Boolean selectTag = ((JCheckBox)e.getSource()).isSelected();
-            if(!selectTag) {
-                Cytoscape.getCurrentNetwork().unselectAllNodes();
-            } else {
-                String selectedGOTerm = functionComboBox.getSelectedItem().toString();                
-                if(!selectedGOTerm.equals("---------")) {
-                    if(!descGOMappingFile.isEmpty()) {
-                        if(!selectedGOTerm.equals("Show all")) {
-                            selectedGOTerm = descGOMappingFile.get(selectedGOTerm).toString();
-                            selectNodesWithGO(selectedGOTerm);
-                        } else {
-                            Cytoscape.getCurrentNetwork().selectAllNodes();
-                        }
+            String selectedGOTerm = functionComboBox.getSelectedItem().toString();
+            if(!selectedGOTerm.equals("---------")) {
+                if(!descGOMappingFile.isEmpty()) {
+                    if(!selectedGOTerm.equals("Show all")) {
+                        selectedGOTerm = descGOMappingFile.get(selectedGOTerm).toString();
+                        selectNodesWithGO(selectedGOTerm);
                     } else {
-                        if(!selectedGOTerm.equals("Show all")) {
-                            selectNodesWithGO(selectedGOTerm);
-                        } else {
-                            Cytoscape.getCurrentNetwork().selectAllNodes();
-                        }
+                        Cytoscape.getCurrentNetwork().selectAllNodes();
+                    }
+                } else {
+                    if(!selectedGOTerm.equals("Show all")) {
+                        selectNodesWithGO(selectedGOTerm);
+                    } else {
+                        Cytoscape.getCurrentNetwork().selectAllNodes();
                     }
                 }
             }
@@ -688,25 +677,12 @@ public class MosaicNetworkPanel extends JPanel implements PropertyChangeListener
 	protected class ChangeFunctionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String selectedGOTerm = ((JComboBox)e.getSource()).getSelectedItem().toString();
-            Boolean selectTag = nodeSelectionBox.isSelected();
             Cytoscape.getCurrentNetwork().unselectAllNodes();
             if(!selectedGOTerm.equals("---------")) {
                 if(!descGOMappingFile.isEmpty()) {
                     if(!selectedGOTerm.equals("Show all")) {
                         selectedGOTerm = descGOMappingFile.get(((JComboBox)e.getSource()).getSelectedItem()).toString();
-                        if(selectTag)
-                            selectNodesWithGO(selectedGOTerm);
-                    } else {
-                        if(selectTag)
-                            Cytoscape.getCurrentNetwork().selectAllNodes();
-                    }
-                } else {
-                    if(!selectedGOTerm.equals("Show all")) {
-                        if(selectTag)
-                            selectNodesWithGO(selectedGOTerm);
-                    } else {
-                        if(selectTag)
-                            Cytoscape.getCurrentNetwork().selectAllNodes();
+
                     }
                 }
                 PartitionNetworkVisualStyleFactory.highlightNodes(selectedGOTerm);
