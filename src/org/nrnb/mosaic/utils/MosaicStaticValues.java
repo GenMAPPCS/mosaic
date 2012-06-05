@@ -19,6 +19,9 @@ public class MosaicStaticValues {
     public static final String BP_ATTNAME = "annotation.GO BIOLOGICAL_PROCESS";
     public static final String CC_ATTNAME = "annotation.GO CELLULAR_COMPONENT";
     public static final String MF_ATTNAME = "annotation.GO MOLECULAR_FUNCTION";
+//    public static final String BP_ATTNAME = "annotation.GO BP_MOSAIC";
+//    public static final String CC_ATTNAME = "annotation.GO CC_MOSAIC";
+//    public static final String MF_ATTNAME = "annotation.GO MF_MOSAIC";
     public static final String CC_CODE = "Tc";
     public static final String BP_CODE = "Tb";
     public static final String MF_CODE = "Tm";

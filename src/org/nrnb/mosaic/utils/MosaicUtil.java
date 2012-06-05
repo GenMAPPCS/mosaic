@@ -349,8 +349,8 @@ public class MosaicUtil {
 		// key will be a List attribute value, so we need to pull out individual
 		// list items
         for (Object o : values) {
-            List oList = (List) o;
             if (attribs.getType(attributeName) == CyAttributes.TYPE_SIMPLE_LIST) {
+                List oList = (List) o;
                 for (int j = 0; j < oList.size(); j++) {
                     Object jObj = oList.get(j);
                     if (jObj != null) {
