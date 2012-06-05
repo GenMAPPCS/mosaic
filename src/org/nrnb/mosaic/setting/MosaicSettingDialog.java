@@ -15,6 +15,7 @@
  ******************************************************************************/
 package org.nrnb.mosaic.setting;
 
+import cytoscape.CyEdge;
 import cytoscape.CyNetwork;
 import cytoscape.CyNode;
 import cytoscape.Cytoscape;
@@ -32,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -85,19 +87,20 @@ public class MosaicSettingDialog extends JDialog
         String[] defaultSpecies = getSpeciesCommonName(CytoscapeInit
                 .getProperties().getProperty("defaultSpeciesName"));
         System.out.println("Guess species: "+defaultSpecies[0]);
-        if(!defaultSpecies[0].equals("")) {
-            annotationSpeciesCode = defaultSpecies[1];
-            rAnnSpeComboBox.setModel(new DefaultComboBoxModel(speciesValues.toArray()));
-            rAnnSpeComboBox.setSelectedIndex(speciesValues.indexOf(defaultSpecies[0]));
-            downloadDBList = checkMappingResources(annotationSpeciesCode);
-            System.out.println(downloadDBList);
-            checkDownloadStatus();
+        if(defaultSpecies[0].equals("")) {
+            defaultSpecies = getSpeciesCommonName("Yeast");
+        }
+        annotationSpeciesCode = defaultSpecies[1];
+        rAnnSpeComboBox.setModel(new DefaultComboBoxModel(speciesValues.toArray()));
+        rAnnSpeComboBox.setSelectedIndex(speciesValues.indexOf(defaultSpecies[0]));
+        downloadDBList = checkMappingResources(annotationSpeciesCode);
+        System.out.println(downloadDBList);
+        checkDownloadStatus();
 
-            if(downloadDBList.isEmpty()) {
-                idMappingTypeValues = IdMapping.getSourceTypes();
-                rAnnTypComboBox.setModel(new DefaultComboBoxModel(idMappingTypeValues.toArray()));
-                setDefaultAttType("ID");
-            }
+        if(downloadDBList.isEmpty()) {
+            idMappingTypeValues = IdMapping.getSourceTypes();
+            rAnnTypComboBox.setModel(new DefaultComboBoxModel(idMappingTypeValues.toArray()));
+            setDefaultAttType("ID");
         }
         //updates ui based on current network attributes
         checkAnnotationStatus();
@@ -141,7 +144,7 @@ public class MosaicSettingDialog extends JDialog
                 return result;
             }
         }
-        return null;
+        return result;
     }
 
     private List<String> checkMappingResources(String species){
@@ -266,6 +269,7 @@ public class MosaicSettingDialog extends JDialog
             rAnnMesLabel.setEnabled(true);
             rAnnMesLabel.setText("You need to first annotate this network with the GO terms selected above.");
             rAnnMesLabel.setForeground(Color.RED);
+            checkDownloadStatus();
         } else if(!(isGOAttr(partitionAttr)||isGOAttr(layoutAttr)||isGOAttr(colorAttr))) {
             //None of three global settings is GO attribute, user can not turn on the annotation panel.
             submitButton.setEnabled(true);
@@ -288,12 +292,12 @@ public class MosaicSettingDialog extends JDialog
             rAnnMesLabel.setEnabled(true);
             rAnnMesLabel.setText("You can optionally re-annotate this network and old annotations wiil be replaced.");
             rAnnMesLabel.setForeground(Color.BLACK);
+            checkDownloadStatus();
         }
 
         aAttParRateLabel.setText(checkAnnotationRate(partitionAttr)+"/"+numberOfNodes+" nodes have attribute values");
         aAttLayRateLabel.setText(checkAnnotationRate(layoutAttr)+"/"+numberOfNodes+" nodes have attribute values");
         aAttNodRateLabel.setText(checkAnnotationRate(colorAttr)+"/"+numberOfNodes+" nodes have attribute values");
-        checkDownloadStatus();
     }
     
     private boolean isGOAttr(String selectedAttribute) {
@@ -305,7 +309,7 @@ public class MosaicSettingDialog extends JDialog
             return false;
         }
     }
-    
+
     private int checkAnnotationRate(String goAttribute) {
         int count = 0;
         CyNetwork currentNetwork = Cytoscape.getCurrentNetwork();
@@ -314,19 +318,24 @@ public class MosaicSettingDialog extends JDialog
             if (currentAttrs.hasAttribute(cn.getIdentifier(), goAttribute)) {
                 byte type = currentAttrs.getType(goAttribute);
                 if (type == CyAttributes.TYPE_SIMPLE_LIST) {
-                    List list = currentAttrs.getListAttribute(
+                    List valList = currentAttrs.getListAttribute(
                         cn.getIdentifier(), goAttribute);
-                    if (list.size() > 1){
+                    if(isGOAttr(goAttribute)){
+                        if(MosaicUtil.isValidGOTerm(valList))
+                            count++;
+                    } else {
                         count++;
-                    } else if (list.size() == 1){
-                        if (list.get(0) != null)
-                            if (!list.get(0).equals(""))
-                                count++;
                     }
                 } else if (type == CyAttributes.TYPE_STRING) {
-                    if (!currentAttrs.getStringAttribute(cn.getIdentifier(),
-                            goAttribute).equals("null"))
+                    String valCheck = currentAttrs.getStringAttribute(cn.getIdentifier(), goAttribute);
+                    List valList = new ArrayList();
+                    valList.add(valCheck);
+                    if(isGOAttr(goAttribute)){
+                        if(MosaicUtil.isValidGOTerm(valList))
+                            count++;
+                    } else {
                         count++;
+                    }
                 } else {
                     //we don't have to be as careful with other attribute types
                     if (!currentAttrs.getAttribute(cn.getIdentifier(),
@@ -449,22 +458,22 @@ public class MosaicSettingDialog extends JDialog
 
         aSelPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Attributes"));
 
-        aAttParLabel.setText("Attribute for partitioning");
+        aAttParLabel.setText("For partitioning");
         aAttParLabel.setMaximumSize(new java.awt.Dimension(180, 14));
         aAttParLabel.setMinimumSize(new java.awt.Dimension(180, 14));
         aAttParLabel.setPreferredSize(new java.awt.Dimension(180, 14));
 
-        aAttLayLabel.setText("Attribute for layout");
+        aAttLayLabel.setText("For layout");
         aAttLayLabel.setMaximumSize(new java.awt.Dimension(180, 14));
         aAttLayLabel.setMinimumSize(new java.awt.Dimension(180, 14));
         aAttLayLabel.setPreferredSize(new java.awt.Dimension(180, 14));
 
-        aAttNodLabel.setText("Attribute for node color");
+        aAttNodLabel.setText("For node color");
         aAttNodLabel.setMaximumSize(new java.awt.Dimension(180, 14));
         aAttNodLabel.setMinimumSize(new java.awt.Dimension(180, 14));
         aAttNodLabel.setPreferredSize(new java.awt.Dimension(180, 14));
 
-        aAttParComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "annotation.GO BIOLOGICAL_PROCESS" }));
+        aAttParComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { MosaicStaticValues.BP_ATTNAME }));
         aAttParComboBox.setMinimumSize(new java.awt.Dimension(212, 18));
         aAttParComboBox.setPreferredSize(new java.awt.Dimension(212, 18));
         aAttParComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -473,7 +482,7 @@ public class MosaicSettingDialog extends JDialog
             }
         });
 
-        aAttLayComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "annotation.GO CELLULAR_COMPONENT" }));
+        aAttLayComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { MosaicStaticValues.CC_ATTNAME }));
         aAttLayComboBox.setPreferredSize(new java.awt.Dimension(212, 18));
         aAttLayComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -481,7 +490,7 @@ public class MosaicSettingDialog extends JDialog
             }
         });
 
-        aAttNodComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "annotation.GO MOLECULAR_FUNCTION" }));
+        aAttNodComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { MosaicStaticValues.MF_ATTNAME }));
         aAttNodComboBox.setPreferredSize(new java.awt.Dimension(212, 18));
         aAttNodComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -510,14 +519,14 @@ public class MosaicSettingDialog extends JDialog
                     .addComponent(aAttParLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(aSelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(aAttLayComboBox, 0, 222, Short.MAX_VALUE)
-                    .addComponent(aAttParComboBox, 0, 222, Short.MAX_VALUE)
-                    .addComponent(aAttNodComboBox, 0, 222, Short.MAX_VALUE))
+                    .addComponent(aAttLayComboBox, 0, 225, Short.MAX_VALUE)
+                    .addComponent(aAttParComboBox, 0, 225, Short.MAX_VALUE)
+                    .addComponent(aAttNodComboBox, 0, 225, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(aSelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(aAttParRateLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                    .addComponent(aAttLayRateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                    .addComponent(aAttNodRateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE))
+                    .addComponent(aAttParRateLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                    .addComponent(aAttLayRateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                    .addComponent(aAttNodRateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE))
                 .addContainerGap())
         );
         aSelPanelLayout.setVerticalGroup(
@@ -605,11 +614,6 @@ public class MosaicSettingDialog extends JDialog
         rAnnGOtComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "SlimMosaic", "SlimPIR", "SlimGeneric", "Full" }));
         rAnnGOtComboBox.setMinimumSize(new java.awt.Dimension(90, 18));
         rAnnGOtComboBox.setPreferredSize(new java.awt.Dimension(108, 18));
-        rAnnGOtComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-            	rAnnGOtComboBoxActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout rAnnPanelLayout = new javax.swing.GroupLayout(rAnnPanel);
         rAnnPanel.setLayout(rAnnPanelLayout);
@@ -624,18 +628,18 @@ public class MosaicSettingDialog extends JDialog
                             .addComponent(rAnnSpeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(rAnnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rAnnIdeComboBox, 0, 117, Short.MAX_VALUE)
-                            .addComponent(rAnnSpeComboBox, 0, 117, Short.MAX_VALUE))
+                            .addComponent(rAnnIdeComboBox, 0, 120, Short.MAX_VALUE)
+                            .addComponent(rAnnSpeComboBox, 0, 120, Short.MAX_VALUE))
                         .addGap(44, 44, 44)
                         .addGroup(rAnnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(rAnnGOtLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(rAnnTypLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(rAnnMesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE))
+                    .addComponent(rAnnMesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(rAnnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rAnnMesButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                    .addComponent(rAnnGOtComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 117, Short.MAX_VALUE)
-                    .addComponent(rAnnTypComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 117, Short.MAX_VALUE))
+                    .addComponent(rAnnMesButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                    .addComponent(rAnnGOtComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 120, Short.MAX_VALUE)
+                    .addComponent(rAnnTypComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 120, Short.MAX_VALUE))
                 .addContainerGap())
         );
         rAnnPanelLayout.setVerticalGroup(
@@ -769,7 +773,7 @@ public class MosaicSettingDialog extends JDialog
         sParMorLabel.setMinimumSize(new java.awt.Dimension(180, 14));
         sParMorLabel.setPreferredSize(new java.awt.Dimension(180, 14));
 
-        sParLevLabel.setText("GO level for partitioning");
+        sParLevLabel.setText("GO level cutoff for partitioning");
         sParLevLabel.setMaximumSize(new java.awt.Dimension(180, 14));
         sParLevLabel.setMinimumSize(new java.awt.Dimension(180, 14));
         sParLevLabel.setPreferredSize(new java.awt.Dimension(180, 14));
@@ -796,7 +800,7 @@ public class MosaicSettingDialog extends JDialog
         sParMorTextField.setPreferredSize(new java.awt.Dimension(108, 18));
 
         sParLevComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All the way", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" }));
-        sParLevComboBox.setSelectedIndex(0);
+        sParLevComboBox.setSelectedIndex(2);
         sParLevComboBox.setMinimumSize(new java.awt.Dimension(90, 18));
         sParLevComboBox.setPreferredSize(new java.awt.Dimension(108, 18));
 
@@ -837,9 +841,9 @@ public class MosaicSettingDialog extends JDialog
                     .addComponent(sParLevLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(2, 2, 2)
                 .addGroup(sParPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sParMorTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                    .addComponent(sParFewTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                    .addComponent(sParLevComboBox, 0, 117, Short.MAX_VALUE))
+                    .addComponent(sParMorTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                    .addComponent(sParFewTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                    .addComponent(sParLevComboBox, 0, 120, Short.MAX_VALUE))
                 .addGap(46, 46, 46)
                 .addGroup(sParPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(sParPatLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -847,9 +851,9 @@ public class MosaicSettingDialog extends JDialog
                     .addComponent(sParCroLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(sParPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sParPatComboBox, 0, 117, Short.MAX_VALUE)
-                    .addComponent(sParCroCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                    .addComponent(sParSpaTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                    .addComponent(sParPatComboBox, 0, 120, Short.MAX_VALUE)
+                    .addComponent(sParCroCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                    .addComponent(sParSpaTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
                 .addContainerGap())
         );
         sParPanelLayout.setVerticalGroup(
@@ -885,7 +889,7 @@ public class MosaicSettingDialog extends JDialog
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(ButtonPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(aSelPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rAnnPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE)
+                    .addComponent(rAnnPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE)
                     .addComponent(sParPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lTepPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -908,16 +912,6 @@ public class MosaicSettingDialog extends JDialog
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void rAnnGOtComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
-    	String GOtype = rAnnGOtComboBox.getSelectedItem().toString();
-    	if (GOtype.equals("Full")){
-    		sParLevComboBox.setSelectedIndex(2);
-    	} else {
-    		sParLevComboBox.setSelectedIndex(0);
-    	}
-        
-    }
 
     private void sParFewTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sParFewTextFieldActionPerformed
         // TODO add your handling code here:
@@ -1050,6 +1044,12 @@ public class MosaicSettingDialog extends JDialog
         //PartitionNetworkVisualStyleFactory.attributeName = null;
 
         if (null != CellAlgorithm.attributeName) {
+            CyAttributes eAttributes = Cytoscape.getEdgeAttributes();
+            Iterator<CyEdge> edgeIt = Cytoscape.getCurrentNetwork().edgesIterator();
+            while (edgeIt.hasNext()) {
+                CyEdge cedge = edgeIt.next();
+                eAttributes.setAttribute(cedge.getIdentifier(), CellAlgorithm.ORI_NAME, cedge.getIdentifier());
+            }
             PartitionAlgorithm.layoutName = CellAlgorithm.LAYOUT_NAME;
         }
         System.out.println(PartitionNetworkVisualStyleFactory.attributeName);
@@ -1165,6 +1165,7 @@ public class MosaicSettingDialog extends JDialog
         }
         if (aAttLayComboBox.getSelectedItem().equals("none")) {
             CellAlgorithm.attributeName = null;
+            System.out.print("CellAlgorithm.attributeName: "+CellAlgorithm.attributeName);
         } else {
             CellAlgorithm.attributeName = aAttLayComboBox.getSelectedItem().toString();
         }
