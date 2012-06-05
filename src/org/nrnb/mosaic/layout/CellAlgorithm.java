@@ -36,6 +36,7 @@ import cytoscape.data.CyAttributes;
 import cytoscape.layout.AbstractLayout;
 import cytoscape.layout.CyLayoutAlgorithm;
 import cytoscape.layout.CyLayouts;
+import giny.model.Edge;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -52,7 +53,8 @@ public class CellAlgorithm extends AbstractLayout {
 	public static double distanceBetweenNodes = 30.0d;
 	public static String attributeName = MosaicStaticValues.CC_ATTNAME;
 	public static final String LAYOUT_NAME = "cell-layout";
-
+    // store the original edge name for copied edges
+	public static final String ORI_NAME = "originalID";
 	// store region assignment as node attribute
 	protected static final String REGION_ATT = "_cellularLayoutRegion";
 	// store whether a node is copied
@@ -294,6 +296,7 @@ public class CellAlgorithm extends AbstractLayout {
 							continue;
 						}
 						CyAttributes attributes = Cytoscape.getNodeAttributes();
+                        CyAttributes eAttributes = Cytoscape.getEdgeAttributes();
 						// attributes.setUserVisible(NODE_COPIED, false);
 
 						// have we already placed this node view?
@@ -391,8 +394,10 @@ public class CellAlgorithm extends AbstractLayout {
 								int newEdge = rootGraph.createEdge(source,
 										target);
 								Cytoscape.getCurrentNetwork().addEdge(newEdge);
-
-								// TODO: copy edge attributes??
+                                // TODO: copy edge attributes??
+                                // Yes, reviewer 3's point 3
+                                eAttributes.setAttribute(rootGraph.getEdge(newEdge).getIdentifier(),
+                                        this.ORI_NAME, eAttributes.getAttribute(rootGraph.getEdge(oldEdge).getIdentifier(), this.ORI_NAME).toString());
 							}
 
 							// increment hashmap count
