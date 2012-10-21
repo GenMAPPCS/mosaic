@@ -42,7 +42,28 @@ public class IdMapping {
     public IdMapping() {
     }
 
+    public static void removeAllSources(){
+        Map<String, Object> args = new HashMap<String, Object>();
+        Set<String> idTypes;
+        try {
+            CyCommandResult result = CyCommandManager.execute("idmapping", "list resources", args);
+            idTypes = (Set<String>) result.getResult();
+            System.out.println("Resources number: "+ idTypes.size());
+            for(String t : idTypes) {
+                System.out.println(t);
+                Map<String, Object> newargs = new HashMap<String, Object>();
+                newargs.put("connstring", t);
+                disConnectFileDB(newargs);
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     public static List<String> getSourceTypes() {
+        String[] excludeTerms = new String[]{"DESCRIPTION", "TYPE", "CHROMOSOME", "OMIM", "IPI", "GENEWIKI", "SYNONYMS", "GENEONTOLOGY", "RFAM"};
+        List excludeList = Arrays.asList(excludeTerms);
         Map<String, Object> noargs = new HashMap<String, Object>();
         CyCommandResult result = null;
         try {
@@ -59,7 +80,8 @@ public class IdMapping {
             //System.out.println(result.getResult().toString());
             Set<String> idTypes = (Set<String>) result.getResult();
             for(String t : idTypes) {
-                sourceIDTypes.add(t);
+                if(excludeList.indexOf(t.toUpperCase())==-1)
+                    sourceIDTypes.add(t);
             }
         }
         return sourceIDTypes;
@@ -84,28 +106,6 @@ public class IdMapping {
         return idTypes;
     }
     
-//    public static boolean mapID(String derbyFilePath, String sourceIDName, String targetIDName) {
-//        System.out.println("Call idmapping success!");
-//        Map<String, Object> args = new HashMap<String, Object>();
-//        args.put("classpath", "org.bridgedb.rdb.IDMapperRdb");
-//        args.put("connstring", "idmapper-pgdb:"+derbyFilePath);
-//        args.put("displayname", derbyFilePath);
-//        //CyDataset d
-//        connectFileDB(args);
-//        CyNetwork currentNetwork = Cytoscape.getCurrentNetwork();
-//        List<String> nodeIds = new ArrayList<String>();
-//        for (CyNode cn : (List<CyNode>) currentNetwork.nodesList()) {
-//            nodeIds.add(cn.getIdentifier());
-//        }
-////        mapAttribute(sourceIDName, targetIDName);
-//        mapGeneralAttribute(nodeIds, targetIDName);
-//        System.out.println("Successfully mapping ID");
-//        args = new HashMap<String, Object>();
-//        args.put("connstring", "idmapper-pgdb:"+derbyFilePath);
-//        //disConnectFileDB(args);
-//        return true;
-//    }
-
     private void setGOAttribute(Map<String, Set<String>> idGOMap, String attributeName) {
         CyAttributes nodeAttrs = Cytoscape.getNodeAttributes();
         CyNetwork currentNetwork = Cytoscape.getCurrentNetwork();
@@ -370,25 +370,6 @@ public class IdMapping {
                 disConnectGOSlimSource(GOSlimFilePath);
             }
         }
-        
-
-//        Map<String, Object> args = new HashMap<String, Object>();
-//        args.put("classpath", "org.bridgedb.rdb.IDMapperRdb");
-//        args.put("connstring", "idmapper-pgdb:"+derbyFilePath);
-//        args.put("displayname", derbyFilePath);
-//        //CyDataset d
-//        connectFileDB(args);
-//        CyNetwork currentNetwork = Cytoscape.getCurrentNetwork();
-//        List<String> nodeIds = new ArrayList<String>();
-//        for (CyNode cn : (List<CyNode>) currentNetwork.nodesList()) {
-//            nodeIds.add(cn.getIdentifier());
-//        }
-//
-//        mapGeneralAttribute(nodeIds, targetIDName);
-//        System.out.println("Successfully mapping ID");
-//        args = new HashMap<String, Object>();
-//        args.put("connstring", "idmapper-pgdb:"+derbyFilePath);
-        //disConnectFileDB(args);
         return true;
     }
     
@@ -546,7 +527,7 @@ public class IdMapping {
      */
     private static void connectFileDB(Map<String, Object> args) {
         System.out.println("-----run connectFileDB-----");
-        //System.out.println(args.toString());
+        System.out.println(args.toString());
         CyCommandResult result = null;
         try {
             result = CyCommandManager.execute("idmapping",

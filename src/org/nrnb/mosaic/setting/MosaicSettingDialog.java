@@ -74,6 +74,8 @@ public class MosaicSettingDialog extends JDialog
     }
 
     private void initValues() {
+        IdMapping.removeAllSources();
+        
         System.out.println("**************initialize values*************");
         speciesValues = Arrays.asList(MosaicStaticValues.speciesList);
         currentAttributeList = Arrays.asList(cytoscape.Cytoscape
